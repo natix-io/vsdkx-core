@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 
 
 setup(
-    name='Core module for vsdkx',
+    name='vsdkx-core',
     url='https://gitlab.com/natix/visiondeploy/aiconnector',
     author='Helmut',
     author_email='helmut@natix.io',
