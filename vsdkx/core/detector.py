@@ -20,7 +20,7 @@ class EventDetector:
         self._logger = logging.getLogger(LOG_TAG)
         model_class = get_env_dict(system_config,
                                    "model.class")
-        model_config = get_env_dict(system_config,
+        model_settings = get_env_dict(system_config,
                                     "model.settings")
         model_profile = get_env_dict(system_config,
                                      "model.profile")
@@ -30,16 +30,16 @@ class EventDetector:
         self._drawing_config = get_env_dict(system_config, "drawing", {})
         profile_path = os.path.join("vsdkx", "model", "profile.yaml")
         profile = io.import_yaml(profile_path)
-        profile_config = get_env_dict(profile, model_profile)
+        model_config = get_env_dict(profile, model_profile)
         module_name, class_name = model_class.rsplit(".", 1)
         module = importlib.import_module(module_name)
         class_ = getattr(module, class_name)
-        self.model_driver: ModelDriver = class_(model_config,
-                                                profile_config,
+        self.model_driver: ModelDriver = class_(model_settings,
+                                                model_config,
                                                 self._drawing_config)
         self._logger.info(f"Loaded driver {self.model_driver}, "
-                          f"with settings {model_config}, "
-                          f"with profile {profile_config}, "
+                          f"with settings {model_settings}, "
+                          f"with config {model_config}, "
                           f"with drawing {self._drawing_config}")
         addons_config = get_env_dict(system_config,
                                      "addons",

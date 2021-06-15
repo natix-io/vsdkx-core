@@ -9,8 +9,8 @@ class ModelDriver(ABC):
 
     @abstractmethod
     def __init__(self,
+                 model_settings: dict,
                  model_config: dict,
-                 profile: dict,
                  drawing_config: dict):
         pass
 
