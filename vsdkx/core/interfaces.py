@@ -30,7 +30,6 @@ class Addon(ABC):
                  drawing_config: dict):
         pass
 
-    @abstractmethod
     def pre_process(self, frame: ndarray) -> ndarray:
         return frame
 
