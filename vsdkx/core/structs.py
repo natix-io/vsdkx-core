@@ -10,4 +10,4 @@ class Inference:
     boxes: ndarray = None
     classes: ndarray = None
     scores: ndarray = None
-    extra: dict = field(default={})
+    extra: dict = None
