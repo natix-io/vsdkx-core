@@ -7,7 +7,7 @@ class Inference:
     """
     This is the structure of inference result
     """
-    boxes: ndarray = None
-    classes: ndarray = None
-    scores: ndarray = None
-    extra: dict = None
+    boxes: ndarray = field(default_factory=lambda: [])
+    classes: ndarray = field(default_factory=lambda: [])
+    scores: ndarray = field(default_factory=lambda: [])
+    extra: dict = field(default_factory=lambda: {})
