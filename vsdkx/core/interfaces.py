@@ -25,7 +25,9 @@ class ModelDriver(ABC):
 class Addon(ABC):
 
     @abstractmethod
-    def __init__(self, addon_config: dict):
+    def __init__(self, addon_config: dict, model_settings: dict,
+                 model_config: dict,
+                 drawing_config: dict):
         pass
 
     @abstractmethod

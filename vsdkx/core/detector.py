@@ -50,7 +50,8 @@ class EventDetector:
             module_name, class_name = class_loader.rsplit(".", 1)
             module = importlib.import_module(module_name)
             class_ = getattr(module, class_name)
-            self.addons.append(class_(config))
+            self.addons.append(class_(config, model_settings, model_config,
+                                      self._drawing_config))
         self._logger.info(f"Loaded addons {self.addons}")
 
     def detect(self, frame: ndarray):
@@ -66,6 +67,14 @@ class EventDetector:
         inference = self.model_driver.inference(frame)
         self._logger.debug(f"Inference result in "
                            f"{time.time() - stamp}")
+        addon_stamp = time.time()
+        for addon in self.addons:
+            stamp = time.time()
+            inference = addon.post_process(inference)
+            self._logger.debug(f"{addon} post processed in "
+                               f"{time.time() - stamp}")
+        self._logger.debug(f"All addons post processed in "
+                           f"{time.time() - addon_stamp} {inference}")
         if self._debug:
             draw_zones(self._drawing_config, frame)
             draw_boxes(self._drawing_config,
@@ -75,11 +84,3 @@ class EventDetector:
                        inference.classes)
             self.model_driver.draw(frame, inference)
             show_window(frame)
-        addon_stamp = time.time()
-        for addon in self.addons:
-            stamp = time.time()
-            inference = addon.post_process(inference)
-            self._logger.debug(f"{addon} post processed in "
-                               f"{time.time() - stamp}")
-        self._logger.debug(f"All addons post processed in "
-                           f"{time.time() - addon_stamp} {inference}")
