@@ -64,6 +64,8 @@ class EventDetector:
                            f"{time.time() - addon_stamp}")
         stamp = time.time()
         inference = self.model_driver.inference(frame)
+        if inference.extra is None:
+            inference.extra = {}
         self._logger.debug(f"Inference result in "
                            f"{time.time() - stamp}")
         if self._debug:
@@ -82,4 +84,4 @@ class EventDetector:
             self._logger.debug(f"{addon} post processed in "
                                f"{time.time() - stamp}")
         self._logger.debug(f"All addons post processed in "
-                           f"{time.time() - addon_stamp}")
+                           f"{time.time() - addon_stamp} {inference}")
