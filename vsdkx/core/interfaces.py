@@ -32,7 +32,7 @@ class Addon(ABC):
 
     @abstractmethod
     def pre_process(self, frame: ndarray) -> ndarray:
-        pass
+        return frame
 
     @abstractmethod
     def post_process(self, inference: Inference) -> Inference:
