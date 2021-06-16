@@ -6,7 +6,8 @@ setup(
     url='https://gitlab.com/natix/visiondeploy/aiconnector',
     author='Helmut',
     author_email='helmut@natix.io',
-    packages=find_namespace_packages(include=['vsdkx.*']),
+    namespace_packages=['vsdkx'],
+    packages=find_namespace_packages(include=['vsdkx*']),
     install_requires=[
         'ai_connector @ git+https://gitlab+deploy-token-432901:B7knEYm-ywm6GSmjKrs9@gitlab.com/natix/visiondeploy/aiconnector.git',
         'argparse',
