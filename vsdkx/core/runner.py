@@ -53,7 +53,6 @@ class SimpleRunner:
 
                     # Read the image
                     image = cv2.imread(args.image_path)
-                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
                     # Time stamp for performance reporting
                     read_stamp = time.time()
@@ -82,13 +81,10 @@ class SimpleRunner:
                         # Time stamp for performance reporting
                         read_start_stamp = time.time()
                         status, frame = cap.read()
-                        # Frame to RGB
-                        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                         read_end_stamp = time.time()
-                        self._run_inference(detector, image)
+                        self._run_inference(detector, frame)
                         self._logger.debug(
                             f'Read time {read_end_stamp - read_start_stamp}')
-                        status, frame = cap.read()
                     end_stamp = time.time()
                     self._logger.debug(f'Done {end_stamp - start_stamp}')
 

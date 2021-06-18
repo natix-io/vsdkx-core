@@ -9,7 +9,7 @@ setup(
     namespace_packages=['vsdkx'],
     packages=find_namespace_packages(include=['vsdkx*']),
     install_requires=[
-        'ai_connector @ git+https://gitlab+deploy-token-432901:B7knEYm-ywm6GSmjKrs9@gitlab.com/natix/visiondeploy/aiconnector.git',
+        'ai_connector @ git+https://gitlab+deploy-token-432901:B7knEYm-ywm6GSmjKrs9@gitlab.com/natix/visiondeploy/aiconnector.git@1.0',
         'argparse',
         'opencv-python~=4.2.0.34',
         'pyyaml',
