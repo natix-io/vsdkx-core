@@ -1,5 +1,6 @@
 import importlib
 import logging
+from dataclasses import asdict
 
 from numpy import ndarray
 
@@ -84,4 +85,4 @@ class EventDetector:
                        inference.classes)
             self.model_driver.draw(frame, inference)
             show_window(frame)
-        return inference
+        return asdict(inference)
