@@ -32,7 +32,8 @@ class SimpleRunner:
                             help='path to your image.')
         parser.add_argument('--video-path', type=str, default='0',
                             help='path to your video, `0` means to use camera')
-        parser.add_argument('--config-path', type=str, default='0',
+        parser.add_argument('--config-path', type=str,
+                            default='vsdkx/settings.yaml',
                             help='path to system config')
 
         args = parser.parse_args()
