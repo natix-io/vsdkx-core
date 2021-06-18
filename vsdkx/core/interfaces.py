@@ -34,5 +34,5 @@ class Addon(ABC):
         return frame
 
     @abstractmethod
-    def post_process(self, inference: Inference) -> Inference:
+    def post_process(self, frame: ndarray, inference: Inference) -> Inference:
         pass

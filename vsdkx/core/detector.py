@@ -70,7 +70,7 @@ class EventDetector:
         addon_stamp = time.time()
         for addon in self.addons:
             stamp = time.time()
-            inference = addon.post_process(inference)
+            inference = addon.post_process(frame, inference)
             self._logger.debug(f"{addon} post processed in "
                                f"{time.time() - stamp}")
         self._logger.debug(f"All addons post processed in "
