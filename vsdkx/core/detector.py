@@ -21,7 +21,7 @@ class EventDetector:
         model_class = get_env_dict(system_config,
                                    "model.class")
         model_settings = get_env_dict(system_config,
-                                    "model.settings")
+                                      "model.settings")
         model_profile = get_env_dict(system_config,
                                      "model.profile")
         self._debug = get_env_dict(system_config,
@@ -84,3 +84,4 @@ class EventDetector:
                        inference.classes)
             self.model_driver.draw(frame, inference)
             show_window(frame)
+        return inference
