@@ -19,8 +19,8 @@ def draw_zones(draw_config: dict, image: ndarray):
         cv2.polylines(image,
                       [zone],
                       True,
-                      color=draw_config["zones_color"],
-                      thickness=draw_config["zone_thickness"])
+                      color=draw_config.get("zones_color", (0, 0, 0)),
+                      thickness=draw_config.get("zone_thickness", 3))
 
 
 def draw_boxes(
@@ -86,7 +86,7 @@ def draw_boxes(
         rectangle_color = draw_config.get(
             "rectangle_color") or (60, 179, 113)
         box_thickness = draw_config.get(
-            "box_thickness") or 1
+            "box_thickness") or 3
 
         cv2.rectangle(image,
                       (xmin + 2, ymin - 2),
@@ -98,9 +98,9 @@ def draw_boxes(
                         "%s: %.2f" % (label, conf),
                         (xmin + 2, ymin - 2),
                         cv2.FONT_HERSHEY_SIMPLEX,
-                        draw_config.get("box_font_scale"),
-                        draw_config.get("text_color"),
-                        draw_config.get("box_thickness"))
+                        draw_config.get("box_font_scale", 0.8),
+                        draw_config.get("text_color", (0, 0, 0)),
+                        draw_config.get("box_thickness", 3))
 
 
 def show_window(frame: ndarray):
