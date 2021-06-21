@@ -6,6 +6,12 @@ from numpy import ndarray
 class Inference:
     """
     This is the structure of inference result
+
+    Attributes:
+        boxes (ndarray): numpy array of box coordinates
+        classes (ndarray): class ids for each bounding box
+        scores (ndarray): confidence scores for each bounding box
+        extra (dict): a dictionary to pass data between model driver and addonsxxxx
     """
     boxes: ndarray = field(default_factory=lambda: [])
     classes: ndarray = field(default_factory=lambda: [])

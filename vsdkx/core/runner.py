@@ -13,16 +13,29 @@ LOG_TAG = "SimpleRunner"
 
 
 class SimpleRunner:
+    """
+    A simple class to parse default arguments and use EventDetector
+    """
 
     def __init__(self,
                  draw_method: Callable[[ndarray, Inference], None] = None):
+        """
+        Initialize with draw_method
+
+        Args:
+            draw_method (Callable): if a draw method is passed and we are in
+            debug mode then this method will be called on each frame when we
+            receive inference after all addons got applied. **NOTICE**: this
+            method won't be called if we are running this without
+            --no-server argument
+        """
         self._draw_method = draw_method
         self._logger = logging.getLogger(LOG_TAG)
 
     def _run_inference(self, detector: EventDetector, image: ndarray):
         result = detector.detect(image)
         if self._draw_method is not None:
-            self._draw_method(image, result)
+            self._draw_method(image, Inference(**result))
 
     def run(self):
         parser = argparse.ArgumentParser()

@@ -15,9 +15,21 @@ LOG_TAG = "EventDetector"
 
 
 class EventDetector:
+    """
+    This class connects to the model driver and addons based on the config
+    dictionary that it is initialized with and with detect method it returns
+    the inference result
+    """
 
     def __init__(self,
                  system_config: dict):
+        """
+        Initialize with the config dictionary
+
+        Args:
+            system_config: you can see the structure of this dictionary
+            in README.md file
+        """
         self._logger = logging.getLogger(LOG_TAG)
         model_class = get_env_dict(system_config,
                                    "model.class")
@@ -55,7 +67,17 @@ class EventDetector:
                                       self._drawing_config))
         self._logger.info(f"Loaded addons {self.addons}")
 
-    def detect(self, frame: ndarray):
+    def detect(self, frame: ndarray) -> dict:
+        """
+        method to use model driver to get the inference result and apply all
+        the addons to the frame and inference.
+
+        Args:
+            frame: the frame data
+
+        Returns:
+            (dict): the dictionary which hase inference result in
+        """
         addon_stamp = time.time()
         for addon in self.addons:
             stamp = time.time()
