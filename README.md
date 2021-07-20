@@ -13,5 +13,5 @@ called on the inference.
 You can use SimpleRunner to run the application with cli commands or you can 
 also start your application with gRPC server and send the frames via that. 
 You can pass a method to SimpleRunner and with that on each frame you have 
-access to the frame and the inference result and you can implement you own 
+access to the frame and the inference result and you can implement your own 
 business with that
