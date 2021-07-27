@@ -15,3 +15,4 @@ also start your application with gRPC server and send the frames via that.
 You can pass a method to SimpleRunner and with that on each frame you have 
 access to the frame and the inference result and you can implement your own 
 business with that
+
