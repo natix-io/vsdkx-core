@@ -88,18 +88,16 @@ class Addon(ABC):
         return addon_object
 
     @abstractmethod
-    def post_process(self, frame: ndarray, inference: Inference) -> Inference:
+    def post_process(self, addon_object: AddonObject) -> AddonObject:
         """
         This method will be called by EventDetector after calling the inference
         method of model driver
 
         Args:
-            frame (ndarray): the frame data
-            inference (Inference): the result of the inference from
-            model driver
+            addon_object (AddonObject): object containing frame,
+            inference result and data shared from other addons
 
         Returns:
-            (Inference): new inference result. addons can put information in
-            extra section of inference structure
+            (AddonObject): addon object with added information
         """
-        pass
+        return addon_object

@@ -97,11 +97,14 @@ class EventDetector:
         addon_object.inference = inference
         for addon in self.addons:
             stamp = time.time()
-            inference = addon.post_process(addon_object)
+            addon_object = addon.post_process(addon_object)
             self._logger.debug(f"{addon} post processed in "
                                f"{time.time() - stamp}")
+
         self._logger.debug(f"All addons post processed in "
                            f"{time.time() - addon_stamp} {inference}")
+        inference = addon_object.inference
+
         if self._debug:
             draw_zones(self._drawing_config, frame)
             draw_boxes(self._drawing_config,
