@@ -1,6 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional
-
 from numpy import ndarray
 
 
@@ -19,10 +17,3 @@ class Inference:
     classes: ndarray = field(default_factory=lambda: [])
     scores: ndarray = field(default_factory=lambda: [])
     extra: dict = field(default_factory=lambda: {})
-
-
-@dataclass
-class AddonObject:
-    shared: dict
-    frame: ndarray
-    inference: Optional[Inference]

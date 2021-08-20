@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from numpy import ndarray
 
-from vsdkx.core.structs import Inference, AddonObject
+from vsdkx.core.structs import Inference
 
 
 class ModelDriver(ABC):
@@ -74,14 +74,12 @@ class Addon(ABC):
         """
         pass
 
-    def pre_process(self, addon_object: AddonObject) -> AddonObject:
+    def pre_process(self, frame: ndarray) -> ndarray:
         """
         This method would be called by EventDetector before calling the
         inference method of model driver
 
         Args:
-            addon_object:
-            shared:
             frame (ndarray): the frame data
 
         Returns:
@@ -90,13 +88,12 @@ class Addon(ABC):
         return frame
 
     @abstractmethod
-    def post_process(self, addon_object: AddonObject) -> AddonObject:
+    def post_process(self, frame: ndarray, inference: Inference) -> Inference:
         """
         This method will be called by EventDetector after calling the inference
         method of model driver
 
         Args:
-            shared:
             frame (ndarray): the frame data
             inference (Inference): the result of the inference from
             model driver
