@@ -5,6 +5,7 @@ from dataclasses import asdict
 from numpy import ndarray
 
 from vsdkx.core.interfaces import ModelDriver, Addon
+from vsdkx.core.structs import AddonObject
 from vsdkx.core.util.drawing import draw_zones, draw_boxes, show_window
 from vsdkx.core.util.io import get_env_dict
 import os
@@ -79,25 +80,31 @@ class EventDetector:
             (dict): the dictionary which hase inference result in
         """
         addon_stamp = time.time()
+        addon_object = AddonObject(frame=frame, inference=None)
         for addon in self.addons:
             stamp = time.time()
-            frame = addon.pre_process(frame)
+            addon_object = addon.pre_process(addon_object)
             self._logger.debug(f"{addon} preprocessed in "
                                f"{time.time() - stamp}")
         self._logger.debug(f"All addons preprocessed in "
                            f"{time.time() - addon_stamp}")
+        frame = addon_object.frame
         stamp = time.time()
         inference = self.model_driver.inference(frame)
         self._logger.debug(f"Inference result in "
                            f"{time.time() - stamp}")
         addon_stamp = time.time()
+        addon_object.inference = inference
         for addon in self.addons:
             stamp = time.time()
-            inference = addon.post_process(frame, inference)
+            addon_object = addon.post_process(addon_object)
             self._logger.debug(f"{addon} post processed in "
                                f"{time.time() - stamp}")
+
         self._logger.debug(f"All addons post processed in "
                            f"{time.time() - addon_stamp} {inference}")
+        inference = addon_object.inference
+
         if self._debug:
             draw_zones(self._drawing_config, frame)
             draw_boxes(self._drawing_config,

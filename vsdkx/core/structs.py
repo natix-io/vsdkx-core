@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from numpy import ndarray
+from typing import Optional
 
 
 @dataclass
@@ -17,3 +18,18 @@ class Inference:
     classes: ndarray = field(default_factory=lambda: [])
     scores: ndarray = field(default_factory=lambda: [])
     extra: dict = field(default_factory=lambda: {})
+
+
+@dataclass
+class AddonObject:
+    """
+    Encapsulating data for transmission between addons
+
+    Attributes:
+        frame (ndarray): frame image
+        inference (Inference): AI inference result
+        shared (dict): data to be shared between addons
+    """
+    frame: ndarray
+    inference: Optional[Inference]
+    shared: dict = field(default_factory=lambda: {})
