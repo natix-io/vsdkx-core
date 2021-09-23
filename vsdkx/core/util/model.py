@@ -1,4 +1,5 @@
 import tensorflow as tf
+import numpy as np
 
 
 def load_tflite(tf_model_path):
@@ -46,4 +47,4 @@ def box_sanity_check(box, width, height):
         xmax = min(xmin + 10, width)
     if ymin >= ymax:
         ymax = min(ymin + 10, height)
-    return [xmin, ymin, xmax, ymax]
+    return np.array([xmin, ymin, xmax, ymax])
