@@ -1,16 +1,17 @@
 import importlib
 import logging
+import os
+import time
 from dataclasses import asdict
 
+import cv2
 from numpy import ndarray
 
 from vsdkx.core.interfaces import ModelDriver, Addon
 from vsdkx.core.structs import AddonObject
+from vsdkx.core.util import io
 from vsdkx.core.util.drawing import draw_zones, draw_boxes, show_window
 from vsdkx.core.util.io import get_env_dict
-import os
-from vsdkx.core.util import io
-import time
 
 LOG_TAG = "EventDetector"
 
@@ -38,6 +39,9 @@ class EventDetector:
                                       "model.settings")
         model_profile = get_env_dict(system_config,
                                      "model.profile")
+        self.image_type = get_env_dict(system_config,
+                                       "image_type",
+                                       default='BGR')
         self._debug = get_env_dict(system_config,
                                    "model.debug",
                                    False)
@@ -79,6 +83,9 @@ class EventDetector:
         Returns:
             (dict): the dictionary which hase inference result in
         """
+        if self.image_type == 'BGR':
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
         addon_stamp = time.time()
         addon_object = AddonObject(frame=frame, inference=None)
         for addon in self.addons:
