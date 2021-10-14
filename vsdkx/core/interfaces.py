@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 
-from numpy import ndarray
-
-from vsdkx.core.structs import Inference, AddonObject
+from vsdkx.core.structs import Inference, AddonObject, FrameObject
 
 
 class ModelDriver(ABC):
@@ -27,26 +25,26 @@ class ModelDriver(ABC):
         pass
 
     @abstractmethod
-    def inference(self, frame: ndarray) -> Inference:
+    def inference(self, frame: FrameObject) -> Inference:
         """
         This method will be called by EventDetector to receive inference result
         from model drivers
 
         Args:
-            frame (ndarray): the frame data
+            frame (FrameObject): the frame data
 
         Returns:
             (Inference): the result of the model driver
         """
         pass
 
-    def draw(self, frame: ndarray, inference: Inference):
+    def draw(self, frame: FrameObject, inference: Inference):
         """
         This method will be called by EventDetector only if debug is true in
         model_settings
 
         Args:
-            frame (ndarray): the frame data
+            frame (FrameObject): the frame data
             inference (Inference): the result if the model driver
         """
         pass
