@@ -12,6 +12,7 @@ from vsdkx.core.structs import AddonObject, FrameObject
 from vsdkx.core.util import io
 from vsdkx.core.util.drawing import draw_zones, draw_boxes, show_window
 from vsdkx.core.util.io import get_env_dict
+from vsdkx.core.util.model import box_sanity_check
 
 LOG_TAG = "EventDetector"
 
@@ -101,6 +102,9 @@ class EventDetector:
         stamp = time.time()
         frame_object = FrameObject(frame, metadata)
         inference = self.model_driver.inference(frame_object)
+        inference.boxes = box_sanity_check(inference.boxes,
+                                           frame.shape[1],
+                                           frame.shape[0])
         self._logger.debug(f"Inference result in "
                            f"{time.time() - stamp}")
         addon_stamp = time.time()

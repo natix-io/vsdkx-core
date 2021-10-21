@@ -22,29 +22,35 @@ def load_tflite(tf_model_path):
     return interpreter, input_details, output_details
 
 
-def box_sanity_check(box, width, height):
+def box_sanity_check(boxes, width, height):
     """
     Performing a sanity check on the detected bounding
     boxes, to prevent negative coordinates from being drawn
     Args:
-        box (np.array): 1D array with the box x1y1x2y2 coordinates
+        boxes (np.array): ND array with the box x1y1x2y2 coordinates
         width (float): The width of the box
         height (float): The height of the box
 
     Returns:
         (np.array): np.array with positive box coordinates
     """
-    xmin = max(0, int(box[0]))
-    ymin = max(0, int(box[1]))
-    xmax = min(width, int(box[2]))
-    ymax = min(height, int(box[3]))
+    sanitized_boxes = []
 
-    # Checking if ymin and xmin are equal or bigger than ymax and xmax
-    # If true, we set them to 10, a higher number than the minimum of
-    # xmin and ymin which are set to 0.
+    for box in boxes:
+        xmin = max(0, int(box[0]))
+        ymin = max(0, int(box[1]))
+        xmax = min(width, int(box[2]))
+        ymax = min(height, int(box[3]))
 
-    if xmin >= xmax:
-        xmax = min(xmin + 10, width)
-    if ymin >= ymax:
-        ymax = min(ymin + 10, height)
-    return np.array([xmin, ymin, xmax, ymax])
+        # Checking if ymin and xmin are equal or bigger than ymax and xmax
+        # If true, we set them to 10, a higher number than the minimum of
+        # xmin and ymin which are set to 0.
+
+        if xmin >= xmax:
+            xmax = min(xmin + 10, width)
+        if ymin >= ymax:
+            ymax = min(ymin + 10, height)
+
+        sanitized_boxes.append(np.array([xmin, ymin, xmax, ymax]))
+
+    return sanitized_boxes
