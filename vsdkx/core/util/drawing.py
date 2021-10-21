@@ -1,7 +1,5 @@
 from numpy import ndarray
 import numpy
-
-from vsdkx.core.util.model import box_sanity_check
 import cv2
 
 
@@ -58,7 +56,7 @@ def draw_boxes(
         else:
             class_id = 0
 
-        xmin, ymin, xmax, ymax = box_sanity_check(box, width, height)
+        xmin, ymin, xmax, ymax = box[0], box[1], box[2], box[3]
         bbox = (
             [xmin, ymin, xmax, ymax], class_id)
         bboxes.append(bbox)

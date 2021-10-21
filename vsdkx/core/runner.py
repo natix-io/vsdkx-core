@@ -3,7 +3,7 @@ import logging
 import time
 from typing import Callable
 import cv2
-from ai_connector.server import Server
+from vsdkx.connector.server import Server
 from numpy import ndarray
 from vsdkx.core.util import io
 from vsdkx.core.detector import EventDetector
