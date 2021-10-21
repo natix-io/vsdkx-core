@@ -80,6 +80,7 @@ class EventDetector:
 
         Args:
             frame: the frame data
+            metadata: the metadata dictionary
 
         Returns:
             (dict): the dictionary which hase inference result in
