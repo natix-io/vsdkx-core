@@ -33,3 +33,17 @@ class AddonObject:
     frame: ndarray
     inference: Optional[Inference]
     shared: dict = field(default_factory=lambda: {})
+
+
+@dataclass
+class FrameObject:
+    """
+    Encapsulating data for transmission between models
+
+    Attributes:
+        frame (ndarray): frame image
+        metadata (dict): metadata dictionary
+
+    """
+    frame: ndarray
+    metadata: Optional[dict]

@@ -8,7 +8,7 @@ import cv2
 from numpy import ndarray
 
 from vsdkx.core.interfaces import ModelDriver, Addon
-from vsdkx.core.structs import AddonObject
+from vsdkx.core.structs import AddonObject, FrameObject
 from vsdkx.core.util import io
 from vsdkx.core.util.drawing import draw_zones, draw_boxes, show_window
 from vsdkx.core.util.io import get_env_dict
@@ -73,7 +73,7 @@ class EventDetector:
                                       self._drawing_config))
         self._logger.info(f"Loaded addons {self.addons}")
 
-    def detect(self, frame: ndarray) -> dict:
+    def detect(self, frame: ndarray, metadata: dict = {}) -> dict:
         """
         method to use model driver to get the inference result and apply all
         the addons to the frame and inference.
@@ -88,7 +88,8 @@ class EventDetector:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         addon_stamp = time.time()
-        addon_object = AddonObject(frame=frame, inference=None)
+        addon_object = AddonObject(frame=frame, inference=None,
+                                   shared=metadata)
         for addon in self.addons:
             stamp = time.time()
             addon_object = addon.pre_process(addon_object)
@@ -98,9 +99,10 @@ class EventDetector:
                            f"{time.time() - addon_stamp}")
         frame = addon_object.frame
         stamp = time.time()
-        inference = self.model_driver.inference(frame)
+        frame_object = FrameObject(frame, metadata)
+        inference = self.model_driver.inference(frame_object)
         inference.boxes = box_sanity_check(inference.boxes,
-                                           frame.shape[0],
+                                           frame.shape[1],
                                            frame.shape[0])
         self._logger.debug(f"Inference result in "
                            f"{time.time() - stamp}")
@@ -115,14 +117,14 @@ class EventDetector:
         self._logger.debug(f"All addons post processed in "
                            f"{time.time() - addon_stamp} {inference}")
         inference = addon_object.inference
-
+        frame_object.frame = addon_object.frame
         if self._debug:
-            draw_zones(self._drawing_config, frame)
+            draw_zones(self._drawing_config, addon_object.frame)
             draw_boxes(self._drawing_config,
-                       frame,
+                       addon_object.frame,
                        inference.boxes,
                        inference.scores,
                        inference.classes)
-            self.model_driver.draw(frame, inference)
+            self.model_driver.draw(frame_object, inference)
             show_window(frame)
         return asdict(inference)
