@@ -12,6 +12,7 @@ from vsdkx.core.structs import AddonObject, FrameObject
 from vsdkx.core.util import io
 from vsdkx.core.util.drawing import draw_zones, draw_boxes, show_window
 from vsdkx.core.util.io import get_env_dict
+from vsdkx.core.util.imp import import_default_settings
 
 LOG_TAG = "EventDetector"
 
@@ -35,6 +36,17 @@ class EventDetector:
         self._logger = logging.getLogger(LOG_TAG)
         model_class = get_env_dict(system_config,
                                    "model.class")
+        model_default_settings = get_env_dict(
+            system_config,
+            "model.default_settings",
+            '.'.join(model_class.split('.')[:-2]) + '.settings.DEFAULT')
+
+        try:
+            default_settings = import_default_settings(model_default_settings)
+        except Exception as e:
+            self._logger.error(e)
+            default_settings = {}
+
         model_settings = get_env_dict(system_config,
                                       "model.settings")
         model_profile = get_env_dict(system_config,
@@ -52,24 +64,52 @@ class EventDetector:
         module_name, class_name = model_class.rsplit(".", 1)
         module = importlib.import_module(module_name)
         class_ = getattr(module, class_name)
-        self.model_driver: ModelDriver = class_(model_settings,
+        self.model_driver: ModelDriver = class_({**default_settings,
+                                                 **model_settings},
                                                 model_config,
                                                 self._drawing_config)
         self._logger.info(f"Loaded driver {self.model_driver}, "
                           f"with settings {model_settings}, "
                           f"with config {model_config}, "
                           f"with drawing {self._drawing_config}")
+        if len({**default_settings, **model_settings}.items()
+               - model_settings.items()
+               ) > 0:
+            self._logger.info(
+                f"These settings have been set by default"
+                f"{dict({**default_settings, **model_settings}.items() - model_settings.items())}"
+            )
         addons_config = get_env_dict(system_config,
                                      "addons",
                                      {})
         self.addons: [Addon] = []
         for _, config in addons_config.items():
             class_loader = get_env_dict(config, "class")
+
+            model_default_settings = get_env_dict(
+                config,
+                "default_settings",
+                '.'.join(class_loader.split('.')[:-2]) + '.settings.DEFAULT')
+
+            try:
+                default_addon_settings = import_default_settings(
+                    model_default_settings)
+            except Exception as e:
+                self._logger.error(e)
+                default_addon_settings = {}
+
             module_name, class_name = class_loader.rsplit(".", 1)
             module = importlib.import_module(module_name)
             class_ = getattr(module, class_name)
-            self.addons.append(class_(config, model_settings, model_config,
-                                      self._drawing_config))
+            self.addons.append(
+                class_({**default_addon_settings, **config},
+                       model_settings, model_config, self._drawing_config))
+            if len({**default_addon_settings, **config}.items()
+                   - config.items()
+                   ) > 0:
+                self._logger.info(
+                    f"These addon settings have been set by default"
+                    f"{dict({**default_addon_settings, **config}.items() - config.items())}")
         self._logger.info(f"Loaded addons {self.addons}")
 
     def detect(self, frame: ndarray, metadata: dict = {}) -> dict:
