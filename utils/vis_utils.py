@@ -6,7 +6,7 @@ from vsdkx.core.structs import Inference
 
 def visualize(frame: np.array, inference_obj: Inference):
     """
-    Function for visualizing inout
+    Function for visualizing input
     Args:
         frame: input frame
         inference_obj: inference object
