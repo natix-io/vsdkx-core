@@ -7,6 +7,7 @@ from vsdkx.core.structs import Inference
 def visualize(frame: np.array, inference_obj: Inference):
     """
     Function to visualize input frame and predicted bounding boxes
+
     Args:
         frame: input frame
         inference_obj: inference object
