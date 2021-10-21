@@ -49,8 +49,9 @@ class EventDetector:
             default_settings = {}
 
         model_settings = get_env_dict(system_config,
-                                      "model.settings",
-                                      {})
+                                      "model.settings")
+        if model_settings is None:
+            model_settings = {}
         model_profile = get_env_dict(system_config,
                                      "model.profile")
         self.image_type = get_env_dict(system_config,
