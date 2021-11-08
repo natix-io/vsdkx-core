@@ -1,3 +1,7 @@
+# Vision Software Development Kit X
+
+# Core
+
 This is core module of vsdkx.
 
 In here all the interfaces needed for model drivers and addon are defined.
@@ -15,4 +19,13 @@ also start your application with gRPC server and send the frames via that.
 You can pass a method to SimpleRunner and with that on each frame you have 
 access to the frame and the inference result and you can implement your own 
 business with that
+
+### Structures and interfaces
+
+In core module we define all the interfaces and structures that any addon or 
+model driver needs to work with vision sdk.
+
+#### ModelDriver
+
+#### Addon
 
