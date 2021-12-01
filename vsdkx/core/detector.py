@@ -54,9 +54,6 @@ class EventDetector:
             model_settings = {}
         model_profile = get_env_dict(system_config,
                                      "model.profile")
-        self.image_type = get_env_dict(system_config,
-                                       "image_type",
-                                       default='BGR')
         self._debug = get_env_dict(system_config,
                                    "model.debug",
                                    False)
@@ -127,9 +124,6 @@ class EventDetector:
         Returns:
             (dict): the dictionary which hase inference result in
         """
-        if self.image_type == 'BGR':
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
         addon_stamp = time.time()
         addon_object = AddonObject(frame=frame, inference=None,
                                    shared=metadata)
