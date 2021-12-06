@@ -83,7 +83,7 @@ class EventDetector:
                                      "addons",
                                      {})
         self.addons: [Addon] = []
-        for _, config in addons_config.keys():
+        for _, config in addons_config.items():
             class_loader = get_env_dict(config, "class")
 
             model_default_settings = get_env_dict(
