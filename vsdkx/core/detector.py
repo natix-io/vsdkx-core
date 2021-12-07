@@ -72,12 +72,12 @@ class EventDetector:
                           f"with settings {model_settings}, "
                           f"with config {model_config}, "
                           f"with drawing {self._drawing_config}")
-        if len({**default_settings, **model_settings}.items()
-               - model_settings.items()
+        if len({**default_settings, **model_settings}.keys()
+               - model_settings.keys()
                ) > 0:
             self._logger.info(
                 f"These settings have been set by default"
-                f"{dict({**default_settings, **model_settings}.items() - model_settings.items())}"
+                f"{dict({**default_settings, **model_settings}.keys() - model_settings.keys())}"
             )
         addons_config = get_env_dict(system_config,
                                      "addons",
@@ -104,12 +104,12 @@ class EventDetector:
             self.addons.append(
                 class_({**default_addon_settings, **config},
                        model_settings, model_config, self._drawing_config))
-            if len({**default_addon_settings, **config}.items()
-                   - config.items()
+            if len({**default_addon_settings, **config}.keys()
+                   - config.keys()
                    ) > 0:
                 self._logger.info(
                     f"These addon settings have been set by default"
-                    f"{dict({**default_addon_settings, **config}.items() - config.items())}")
+                    f"{dict({**default_addon_settings, **config}.keys() - config.keys())}")
         self._logger.info(f"Loaded addons {self.addons}")
 
     def detect(self, frame: ndarray, metadata: dict = {}) -> dict:
