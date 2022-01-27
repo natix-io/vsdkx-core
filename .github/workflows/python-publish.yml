@@ -16,7 +16,7 @@ jobs:
      - uses: actions/checkout@main
      - uses: go-semantic-release/action@v1
        with:
-         changelog-file: true
+         changelog-file: CHANGELOG.md
          github-token: ${{ secrets.TOKEN }}
   
   deploy:
