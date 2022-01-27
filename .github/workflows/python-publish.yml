@@ -1,18 +1,39 @@
-name: Semantic Release
+name: Semantic Release and Upload Python Package
 
 on:
   push:
     branches:
       - main
+  release:
+    types: [created]    
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     concurrency: release
-
+  
     steps:
      - uses: actions/checkout@main
      - uses: go-semantic-release/action@v1
        with:
-         changelog-file: CHANGELOG.md
+         changelog-file: true
          github-token: ${{ secrets.TOKEN }}
+  
+  deploy:
+    name: Upload Python Package
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+    - name: Build and publish
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+      run: |
+        python setup.py sdist bdist_wheel
+        twine upload dist/*  
