@@ -1,4 +1,4 @@
-# Vision Software Development Kit X
+# Vision Software development kit X
 
 # Core
 
@@ -20,12 +20,21 @@ You can pass a method to SimpleRunner and with that on each frame you have
 access to the frame and the inference result and you can implement your own 
 business with that
 
-### Structures and interfaces
+### Structures
 
-In core module we define all the interfaces and structures that any addon or 
-model driver needs to work with vision sdk.
+In core module we define all the structures that any addon or 
+model driver needs to work as part of the vision sdk.
+
+#### Inference
+
+inference class acts as a structural template for all the models and addons.
+It is the final product of model inference processing preceeded and followed
+by addons processing.
+
+### Interfaces
 
 #### ModelDriver
 
 #### Addon
+
 
