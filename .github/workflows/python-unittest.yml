@@ -1,0 +1,22 @@
+name: Run Python Unit Tests
+
+on: push
+
+jobs:
+  run_unit_tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.7"
+    - name: Install package
+      run: |
+        python3.7 -m pip install --upgrade pip
+        pip3.7 install .
+    - name: Test with unittest 
+      run: |
+        python3.7 -m unittest discover -s tests
+
