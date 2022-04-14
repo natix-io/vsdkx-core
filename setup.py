@@ -9,7 +9,7 @@ setup(
     namespace_packages=['vsdkx'],
     packages=find_namespace_packages(include=['vsdkx*']),
     install_requires=[
-        'vsdkx-connector @ git+https://github.com/natix-io/vsdkx-connector.git',
+        'vsdkx-connector @ git+https://github.com/natix-io/vsdkx-connector.git@guja/improve_logging',
         'argparse',
         'opencv-python~=4.2.0.34',
         'pyyaml',
