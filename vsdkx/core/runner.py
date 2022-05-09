@@ -9,6 +9,18 @@ from vsdkx.core.util import io
 from vsdkx.core.detector import EventDetector
 from vsdkx.core.structs import Inference
 
+
+def getLogger(name=None):
+    """
+    Return a logger with the specified name, creating it if necessary.
+
+    If no name is specified, return the root logger.
+    """
+    if not name or isinstance(name, str) and name == logging.root.name:
+        return logging.Logger.manager.getLogger("__ROOT__")
+    return logging.Logger.manager.getLogger(name)
+
+
 LOG_TAG = "SimpleRunner"
 
 
@@ -30,6 +42,7 @@ class SimpleRunner:
             --no-server argument
         """
         self._draw_method = draw_method
+        logging.getLogger = getLogger
         self._logger = logging.getLogger(LOG_TAG)
 
     def _run_inference(self, detector: EventDetector, image: ndarray):
